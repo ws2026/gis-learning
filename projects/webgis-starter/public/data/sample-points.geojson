@@ -1,0 +1,118 @@
+{
+  "type": "FeatureCollection",
+  "name": "sample-points",
+  "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:OGC:1.3:CRS84"}},
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "北京",
+        "name_en": "Beijing",
+        "admin": "北京市",
+        "level": "直辖市",
+        "population_wan": 2184,
+        "note": "示例属性：人口为约数，单位万人"
+      },
+      "geometry": {"type": "Point", "coordinates": [116.4074, 39.9042]}
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "上海",
+        "name_en": "Shanghai",
+        "admin": "上海市",
+        "level": "直辖市",
+        "population_wan": 2475
+      },
+      "geometry": {"type": "Point", "coordinates": [121.4737, 31.2304]}
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "广州",
+        "name_en": "Guangzhou",
+        "admin": "广东省",
+        "level": "省会",
+        "population_wan": 1881
+      },
+      "geometry": {"type": "Point", "coordinates": [113.2644, 23.1291]}
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "成都",
+        "name_en": "Chengdu",
+        "admin": "四川省",
+        "level": "省会",
+        "population_wan": 2140
+      },
+      "geometry": {"type": "Point", "coordinates": [104.0665, 30.5723]}
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "西安",
+        "name_en": "Xi'an",
+        "admin": "陕西省",
+        "level": "省会",
+        "population_wan": 1300
+      },
+      "geometry": {"type": "Point", "coordinates": [108.9398, 34.3416]}
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "武汉",
+        "name_en": "Wuhan",
+        "admin": "湖北省",
+        "level": "省会",
+        "population_wan": 1374
+      },
+      "geometry": {"type": "Point", "coordinates": [114.3055, 30.5928]}
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "哈尔滨",
+        "name_en": "Harbin",
+        "admin": "黑龙江省",
+        "level": "省会",
+        "population_wan": 939
+      },
+      "geometry": {"type": "Point", "coordinates": [126.5349, 45.8038]}
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "乌鲁木齐",
+        "name_en": "Urumqi",
+        "admin": "新疆维吾尔自治区",
+        "level": "省会",
+        "population_wan": 408
+      },
+      "geometry": {"type": "Point", "coordinates": [87.6168, 43.8256]}
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "拉萨",
+        "name_en": "Lhasa",
+        "admin": "西藏自治区",
+        "level": "省会",
+        "population_wan": 95
+      },
+      "geometry": {"type": "Point", "coordinates": [91.1409, 29.6456]}
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "昆明",
+        "name_en": "Kunming",
+        "admin": "云南省",
+        "level": "省会",
+        "population_wan": 868
+      },
+      "geometry": {"type": "Point", "coordinates": [102.8329, 24.8801]}
+    }
+  ]
+}

@@ -1,0 +1,45 @@
+{
+  "type": "FeatureCollection",
+  "name": "sample-lines",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "京沪高铁（示意）",
+        "type": "railway",
+        "length_hint": "约 1318 km",
+        "note": "折线仅用于演示，不代表真实线位"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [116.4074, 39.9042],
+          [117.2008, 39.0842],
+          [117.1205, 36.6512],
+          [118.7969, 32.0603],
+          [121.4737, 31.2304]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "长江（示意）",
+        "type": "waterway",
+        "length_hint": "约 6300 km",
+        "note": "折线仅用于演示，不代表真实河道"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [106.5516, 29.563],
+          [111.2865, 30.6919],
+          [114.3055, 30.5928],
+          [116.0, 29.7051],
+          [118.7969, 32.0603],
+          [121.4737, 31.2304]
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>WebGIS Starter · OpenLayers + Vite</title>
+    <meta name="description" content="WebGIS 学习起步项目：底图切换、矢量图层、绘制测量、GeoJSON 导入导出、坐标投影" />
+  </head>
+  <body>
+    <div id="app">
+      <div id="map"></div>
+
+      <header id="topbar">
+        <button id="panel-toggle" type="button" title="收起 / 展开面板">☰</button>
+        <div class="brand">
+          <strong>WebGIS Starter</strong>
+          <span>OpenLayers · Vite · EPSG:3857</span>
+        </div>
+      </header>
+
+      <aside id="panel">
+        <section class="panel-section">
+          <h2>底图</h2>
+          <div id="basemap-list" class="stack"></div>
+          <p class="hint">底图统一使用 Web 墨卡托（EPSG:3857）。</p>
+        </section>
+
+        <section class="panel-section">
+          <h2>示例数据图层</h2>
+          <div id="layer-list" class="stack"></div>
+          <label class="row">
+            <span>不透明度</span>
+            <input id="layer-opacity" type="range" min="10" max="100" value="100" />
+          </label>
+        </section>
+
+        <section class="panel-section">
+          <h2>绘制与测量</h2>
+          <div class="btn-grid">
+            <button type="button" data-tool="Point">点</button>
+            <button type="button" data-tool="LineString">线</button>
+            <button type="button" data-tool="Polygon">面</button>
+            <button type="button" data-tool="Circle">圆</button>
+            <button type="button" data-tool="LineString" data-measure="1">测距</button>
+            <button type="button" data-tool="Polygon" data-measure="1">测面积</button>
+          </div>
+          <div class="btn-row">
+            <button id="btn-stop" type="button" class="ghost">退出绘制</button>
+            <button id="btn-clear" type="button" class="ghost danger">清除绘制</button>
+          </div>
+          <div class="btn-row">
+            <button id="btn-export" type="button" class="ghost">导出 GeoJSON</button>
+            <button id="btn-clear-import" type="button" class="ghost">清空拖入数据</button>
+          </div>
+          <p class="hint">
+            绘制完成后可直接拖动节点修改（Modify + Snap）。测距 / 测面积结果实时显示在地图上，
+            面积与长度按球面（ol/sphere）计算。
+          </p>
+        </section>
+
+        <section class="panel-section">
+          <h2>定位与投影</h2>
+          <div class="coord-row">
+            <label>经度<input id="input-lon" type="number" step="0.0001" value="116.4074" /></label>
+            <label>纬度<input id="input-lat" type="number" step="0.0001" value="39.9042" /></label>
+          </div>
+          <button id="btn-locate" type="button" class="primary">定位到该坐标</button>
+          <pre id="proj-info" class="proj-info">输入经纬度后显示投影换算结果</pre>
+        </section>
+
+        <section class="panel-section">
+          <h2>拖拽加载数据</h2>
+          <p class="hint">
+            把 <b>.geojson / .topojson / .kml / .gpx</b> 文件直接拖到地图上即可加载，
+            地图会自动缩放到数据范围。Shapefile(zip) 需要额外引入 <code>shpjs</code> 解析。
+          </p>
+        </section>
+
+        <footer class="panel-footer">
+          <span id="status-count">要素 0</span>
+          <span id="status-active">当前工具：浏览</span>
+        </footer>
+      </aside>
+
+      <div id="statusbar">
+        <span id="status-coord">经度 — · 纬度 —</span>
+        <span id="status-mercator">EPSG:3857 —</span>
+        <span id="status-zoom">缩放 —</span>
+      </div>
+
+      <!-- OpenLayers Overlay 元素：会被自动移入地图的 overlay 容器 -->
+      <div id="popup">
+        <a href="#" id="popup-closer" title="关闭">✕</a>
+        <div id="popup-content"></div>
+      </div>
+      <div id="measure-tooltip"></div>
+      <div id="toast" role="status"></div>
+    </div>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
