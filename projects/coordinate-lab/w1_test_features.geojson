@@ -1,0 +1,52 @@
+{
+  "type": "FeatureCollection",
+  "name": "w1_test_line",
+  "crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "测试线A_广州东西向",
+        "note": "纬线方向，用来演示 Web 墨卡托的长度变形",
+        "length_4326_real_m": 103319
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [113.0000, 23.1291],
+          [114.0000, 23.1291]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "测试线B_1度子午线",
+        "note": "经线方向，用来对比不同方向的变形差异",
+        "length_4326_real_m": 110574
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [113.2644, 23.0000],
+          [113.2644, 24.0000]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "测试线C_高纬对照",
+        "note": "同样1个纬度，但放在北纬60度，用来验证 cos(纬度) 变形规律",
+        "length_4326_real_m": 111412
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [20.0000, 60.0000],
+          [20.0000, 61.0000]
+        ]
+      }
+    }
+  ]
+}

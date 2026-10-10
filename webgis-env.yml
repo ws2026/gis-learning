@@ -1,0 +1,21 @@
+# webgis 环境定义（W1 起使用）
+# 复现：conda env create -f webgis-env.yml
+# 国内加速：把 - conda-forge 换成 https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/conda-forge
+#           把 - defaults   换成 https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/main
+# 注意：只对公开频道配镜像；机构私有源/商业频道不要混用
+name: webgis
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.12
+  - pyproj
+  - shapely
+  - geopandas
+  - fiona
+  - rasterio
+  - numpy
+  - pandas
+  - requests
+  - jupyter
+  - ipykernel

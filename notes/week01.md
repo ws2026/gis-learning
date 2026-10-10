@@ -111,3 +111,129 @@ projects/coordinate-lab/
 - [ ] 能手算 z=1、z=2 的瓦片编号，并能解释公式每一项
 - [ ] 能说清"同一份数据在 QGIS 里对不上底图"的 3 种可能原因
 - [ ] 投影换算脚本能跑，结果与 QGIS 一致（误差 < 1 米）
+
+---
+
+# W1 进行中（2026-10-09）
+
+> 本节由环境搭建会话追加。W0 已通关状态保持不变。
+
+## 一、环境补齐
+
+- [x] **Miniconda 装好**：`D:\xx\Miniconda3`（conda 26.7.1 / Python 3.13.15），**没加 PATH**（避免污染已有 node/git）
+- [x] **`webgis` 环境建好**：`D:\xx\Miniconda3\envs\webgis`（Python 3.12.15）
+- [x] 环境定义已导出：[webgis-env.yml](../webgis-env.yml)
+- [x] Jupyter 内核已注册（名字 `webgis`）
+- [x] QGIS LTR 待装（练习 2、3 需要）
+- [x] 清理了仓库根目录的误存文件 `hellowrold`（14 字节，内容是 `int`/`out`/`main`，与 GIS 无关）
+
+`webgis` 环境内的关键包版本（写进笔记，以后排错有基线）：
+
+| 包 | 版本 | 用途 |
+| --- | --- | --- |
+| Python | 3.12.15 | — |
+| pyproj | 3.8.0 | 坐标系换算（W1 核心） |
+| geopandas | 1.2.0 | 读写 GeoJSON（W2 核心） |
+| shapely | 2.2.0 | 几何运算 |
+| fiona | 1.10.1 | geopandas 底层读写引擎 |
+| rasterio | 1.5.2 | 影像读写（W13 遥感轨道备用） |
+| numpy | 2.5.3 | W9 造测试数据 |
+| pandas | 3.0.6 | W10 分析 |
+
+## 二、练手 1 已跑通（Python 版）
+
+产出物在 [projects/coordinate-lab/](../projects/coordinate-lab/)：
+
+- `w1_proj.py` —— 投影换算 + 瓦片编号 + GCJ-02 偏移量测算（三个练习合一）
+- `w1_test_features.geojson` —— 实验一用的 3 条测试线
+- `README.md` —— 结论汇总
+
+**关键交叉验证结果**：Python (`pyproj 3.8.0`) 算出的广州 3857 坐标
+`12608535.33, 2647638.58`，与你在 [第四节](#四坐标系实测数据w1-素材) 用
+**PostGIS `ST_Transform`** 和**前端 JS** 算出的值**完全一致，误差 0**。
+
+这印证了第四节的结论 1：坐标转换是封闭公式，不是迭代近似，任何标准实现都应一致。
+以后"图层对不上"可以拿这个点做基准测试，而不是靠猜。
+
+**复现**：
+
+```bash
+gis && conda activate webgis
+python projects/coordinate-lab/w1_proj.py
+```
+
+## 三、练手 1（Python 版）实测数据
+
+### 瓦片编号（广州 113.2644, 23.1291）
+
+| z | 瓦片 x | 瓦片 y | 该级瓦片总数 | 是否与第四节一致 |
+| --- | --- | --- | --- | --- |
+| 1 | 1 | 0 | 4 | — |
+| 2 | 3 | 1 | 16 | — |
+| 12 | 3336 | 1777 | 16,777,216 | ✅ 与第四节 `3336/1777` 一致 |
+| 15 | 26693 | 14219 | 1,073,741,824 | — |
+| 18 | 213548 | 113752 | 68,719,476,736 | — |
+
+**手算过程（验收标准第 1 项）**：
+
+```
+z=1: n=2        x=(113.2644+180)/360×2 = 1.6292 → 1
+                y=(1-asinh(tan(23.1291°))/π)/2×2 = 0.8679 → 0
+z=2: n=4        x=(113.2644+180)/360×4 = 3.2585 → 3
+                y=(1-asinh(tan(23.1291°))/π)/2×4 = 1.7357 → 1
+```
+
+公式每一项的含义：
+
+- `(lon+180)/360` —— 把经度 `-180~180` 线性映射到 `0~1`
+- `×n`（`n=2^z`）—— 映射到第 z 级的 `n×n` 网格
+- `asinh(tan(lat))` —— 墨卡托的纬度非线性变换（等价于 `ln(tan(π/4+lat/2))`，
+  用 asinh 形式可避免 `lat→±90°` 时 tan 溢出）
+- `1 - .../π` 再 `/2` —— 因为瓦片 **y 轴向下**（北在上，编号 0 在顶部）
+- `int(...)` —— 取整得到瓦片索引
+
+### GCJ-02 偏移量（补充第四节的空白）
+
+| 城市 | 偏移距离 | 方向 |
+| --- | --- | --- |
+| 北京天安门 | 724.3 m | 东 695 / 北 204 |
+| 广州塔 | 676.0 m | 东 593 / 南 324 |
+| 上海人民广场 | 563.4 m | 东 504 / 南 253 |
+| 三亚 | 497.1 m | 东 456 / 南 198 |
+| 乌鲁木齐 | 367.8 m | 东 317 / 北 186 |
+
+**结论**：偏移量随位置变化（367~724 m），**不是固定值**，且非线性，
+必须用算法转换而非线性平移。
+
+## 四、Web 墨卡托放大的量化（练习 2 的理论准备）
+
+放大系数 = `1/cos(纬度)`：
+
+| 纬度 | 系数 | 距离统计偏差 |
+| --- | --- | --- |
+| 0° | 1.0000 | 无 |
+| 23.13°（广州） | 1.0874 | +8.7% |
+| 45°（哈尔滨） | 1.4142 | +41% |
+| 60.5° | 2.0308 | +103% |
+
+**这直接关系到 W10**：在 3857 下算"500 米缓冲区"，广州会多算约 8.7%，
+高纬地区严重失真。精确量算要用 4326 + 椭球，或换投影坐标系。
+
+## 五、待做
+
+- [ ] 装 QGIS LTR（练习 2、3 的前提）
+- [ ] 练习 2：QGIS 里 4326/3857 对比量算（步骤见 `projects/coordinate-lab/notes/`）
+- [ ] 练习 3：QGIS 里叠加 WGS84 / GCJ-02 两个点，量偏移量
+- [ ] 补 `coord.mjs`（Node.js 版）与 `sql/coordinate.sql`（PostGIS 版）
+- [ ] QGIS 实测值填入 README 的交叉验证表，凑齐四方一致
+
+## 六、本次踩到的坑（延续第二节的格式）
+
+| # | 现象 | 根因 | 解法 |
+| --- | --- | --- | --- |
+| 10 | `conda create` 报 `CondaToSNonInteractiveError: Terms of Service have not been accepted` | conda 26.x 新增的合规校验，`defaults` 频道须显式接受条款 | `conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/main`（`r`、`msys2` 同理） |
+| 11 | 装完 Miniconda 后普通 PowerShell 里 `conda` 找不到 | 安装时**故意没勾** Add to PATH（正确做法） | 用开始菜单的 Anaconda Prompt；或 `conda init powershell` |
+| 12 | Python 脚本输出中文在 PowerShell 里显示成乱码 | PS 5.1 控制台输出编码与 UTF-8 不匹配（**文件本身没问题**） | `chcp 65001` + `[Console]::OutputEncoding=[Text.Encoding]::UTF8`，或设 `PYTHONIOENCODING=utf-8` |
+| 13 | `Get-Content -Raw` 读 UTF-8 中文文件后回写变成乱码 | PS 5.1 的 `Get-Content` 默认按 ANSI(GBK) 解码 | 读写都显式指定编码：`[System.IO.File]::ReadAllText($f,[Text.Encoding]::UTF8)` |
+| 14 | `python` 命令指向 0 字节的 `WindowsApps\python.exe` | 微软商店的"应用执行别名"空壳 | 装 Miniconda 后到「设置 → 应用 → 应用执行别名」关闭 `python.exe` / `python3.exe` |
+| 15 | pip 装 GDAL 系包报 `Cannot find header.dxf (GDAL_DATA is not defined)` | conda 环境的 GDAL 数据目录未自动导出到 `GDAL_DATA` | 仅 `ogr2ogr` 等 GDAL 命令行工具需要；W2 建议直接用 **QGIS 自带的 OSGeo4W Shell**，不要额外 conda 装 gdal |
