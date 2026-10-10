@@ -118,7 +118,7 @@ projects/coordinate-lab/
 
 > 本节由环境搭建会话追加。W0 已通关状态保持不变。
 
-## 一、环境补齐
+## 八、环境补齐
 
 - [x] **Miniconda 装好**：`D:\xx\Miniconda3`（conda 26.7.1 / Python 3.13.15），**没加 PATH**（避免污染已有 node/git）
 - [x] **`webgis` 环境建好**：`D:\xx\Miniconda3\envs\webgis`（Python 3.12.15）
@@ -140,7 +140,7 @@ projects/coordinate-lab/
 | numpy | 2.5.3 | W9 造测试数据 |
 | pandas | 3.0.6 | W10 分析 |
 
-## 二、练手 1 已跑通（Python 版）
+## 九、练手 1 已跑通（Python 版）
 
 产出物在 [projects/coordinate-lab/](../projects/coordinate-lab/)：
 
@@ -162,7 +162,7 @@ gis && conda activate webgis
 python projects/coordinate-lab/w1_proj.py
 ```
 
-## 三、练手 1（Python 版）实测数据
+## 十、练手 1（Python 版）实测数据
 
 ### 瓦片编号（广州 113.2644, 23.1291）
 
@@ -205,7 +205,7 @@ z=2: n=4        x=(113.2644+180)/360×4 = 3.2585 → 3
 **结论**：偏移量随位置变化（367~724 m），**不是固定值**，且非线性，
 必须用算法转换而非线性平移。
 
-## 四、Web 墨卡托放大的量化（练习 2 的理论准备）
+## 十一、Web 墨卡托放大的量化（练习 2 的理论准备）
 
 放大系数 = `1/cos(纬度)`：
 
@@ -219,7 +219,7 @@ z=2: n=4        x=(113.2644+180)/360×4 = 3.2585 → 3
 **这直接关系到 W10**：在 3857 下算"500 米缓冲区"，广州会多算约 8.7%，
 高纬地区严重失真。精确量算要用 4326 + 椭球，或换投影坐标系。
 
-## 五、待做
+## 十二、待做
 
 - [ ] 装 QGIS LTR（练习 2、3 的前提）
 - [ ] 练习 2：QGIS 里 4326/3857 对比量算（步骤见 `projects/coordinate-lab/notes/`）
@@ -227,13 +227,98 @@ z=2: n=4        x=(113.2644+180)/360×4 = 3.2585 → 3
 - [ ] 补 `coord.mjs`（Node.js 版）与 `sql/coordinate.sql`（PostGIS 版）
 - [ ] QGIS 实测值填入 README 的交叉验证表，凑齐四方一致
 
-## 六、本次踩到的坑（延续第二节的格式）
+## 十三、本次踩到的坑（延续第二节的格式）
 
 | # | 现象 | 根因 | 解法 |
 | --- | --- | --- | --- |
-| 10 | `conda create` 报 `CondaToSNonInteractiveError: Terms of Service have not been accepted` | conda 26.x 新增的合规校验，`defaults` 频道须显式接受条款 | `conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/main`（`r`、`msys2` 同理） |
-| 11 | 装完 Miniconda 后普通 PowerShell 里 `conda` 找不到 | 安装时**故意没勾** Add to PATH（正确做法） | 用开始菜单的 Anaconda Prompt；或 `conda init powershell` |
-| 12 | Python 脚本输出中文在 PowerShell 里显示成乱码 | PS 5.1 控制台输出编码与 UTF-8 不匹配（**文件本身没问题**） | `chcp 65001` + `[Console]::OutputEncoding=[Text.Encoding]::UTF8`，或设 `PYTHONIOENCODING=utf-8` |
-| 13 | `Get-Content -Raw` 读 UTF-8 中文文件后回写变成乱码 | PS 5.1 的 `Get-Content` 默认按 ANSI(GBK) 解码 | 读写都显式指定编码：`[System.IO.File]::ReadAllText($f,[Text.Encoding]::UTF8)` |
-| 14 | `python` 命令指向 0 字节的 `WindowsApps\python.exe` | 微软商店的"应用执行别名"空壳 | 装 Miniconda 后到「设置 → 应用 → 应用执行别名」关闭 `python.exe` / `python3.exe` |
-| 15 | pip 装 GDAL 系包报 `Cannot find header.dxf (GDAL_DATA is not defined)` | conda 环境的 GDAL 数据目录未自动导出到 `GDAL_DATA` | 仅 `ogr2ogr` 等 GDAL 命令行工具需要；W2 建议直接用 **QGIS 自带的 OSGeo4W Shell**，不要额外 conda 装 gdal |
+| N1 | `conda create` 报 `CondaToSNonInteractiveError: Terms of Service have not been accepted` | conda 26.x 新增的合规校验，`defaults` 频道须显式接受条款 | `conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/main`（`r`、`msys2` 同理） |
+| N2 | 装完 Miniconda 后普通 PowerShell 里 `conda` 找不到 | 安装时**故意没勾** Add to PATH（正确做法） | 用开始菜单的 Anaconda Prompt；或 `conda init powershell` |
+| N3 | Python 脚本输出中文在 PowerShell 里显示成乱码 | PS 5.1 控制台输出编码与 UTF-8 不匹配（**文件本身没问题**） | `chcp 65001` + `[Console]::OutputEncoding=[Text.Encoding]::UTF8`，或设 `PYTHONIOENCODING=utf-8` |
+| N4 | `Get-Content -Raw` 读 UTF-8 中文文件后回写变成乱码 | PS 5.1 的 `Get-Content` 默认按 ANSI(GBK) 解码 | 读写都显式指定编码：`[System.IO.File]::ReadAllText($f,[Text.Encoding]::UTF8)` |
+| N5 | `python` 命令指向 0 字节的 `WindowsApps\python.exe` | 微软商店的"应用执行别名"空壳 | 装 Miniconda 后到「设置 → 应用 → 应用执行别名」关闭 `python.exe` / `python3.exe` |
+| N6 | pip 装 GDAL 系包报 `Cannot find header.dxf (GDAL_DATA is not defined)` | conda 环境的 GDAL 数据目录未自动导出到 `GDAL_DATA` | 仅 `ogr2ogr` 等 GDAL 命令行工具需要；W2 建议直接用 **QGIS 自带的 OSGeo4W Shell**，不要额外 conda 装 gdal |
+
+---
+
+## 十四、实验一实测完成（2026-10-11）
+
+### 三条测试线的长度对比
+
+工程 CRS 分别设为 4326 / 3857，长度用**字段计算器 `$length`** 计算
+（比测量工具可靠：结果写入属性表，可复现、可导出）。
+
+| 线 | 位置 | 几何 | 4326 + 椭球（真实） | 3857（墨卡托） | 膨胀率 | 理论 `1/cos(纬度)` |
+| --- | --- | --- | --- | --- | --- | --- |
+| A | 广州 23.1291°N | 东西向 1° 经度 | 102,424.576 m | 111,319.491 m | +8.68% | 1.0874 |
+| B | 广州 23.5°N | 南北向 1° 纬度 | 110,751.075 m | 121,389.472 m | +9.61% | 1.0904 |
+| C | 挪威 60.5°N | 南北向 1° 纬度 | 111,420.728 m | 226,085.310 m | **+102.9%** | 2.0308 |
+
+**核心结论：同样是"1 个纬度"，广州误差 8.7%，挪威误差 103%。**
+Web 墨卡托的变形不是均匀放大，而是随纬度急剧恶化。
+这不是背来的结论，是自己量出来的 —— 面试被问"3857 什么时候不能用"时有数据可讲。
+
+### 四方交叉验证闭合
+
+广州 (113.2644, 23.1291) 的 3857 坐标在四个独立实现下**完全一致**：
+
+| 实现 | x_3857 | y_3857 |
+| --- | --- | --- |
+| PostGIS `ST_Transform` | 12608535.33 | 2647638.58 |
+| 前端 JS / `ol/proj` | 12608535.33 | 2647638.58 |
+| Python `pyproj 3.8.0` | 12608535.33 | 2647638.58 |
+| **QGIS 3.44.15**（本次实测） | **12608535.33** | **2647638.58** |
+
+坐标转换是**封闭公式**而非迭代近似，所以任何标准实现都必须一致。
+以后"图层对不上"可以拿这个点做基准测试（benchmark），不用猜。
+
+### 数据修正记录
+
+`w1_test_features.geojson` 原字段 `length_4326_real_m` 是用**球面公式**估算的
+（A 线填 103,319 m），与椭球实测值 102,424.576 m **差约 0.9 km**。
+已改为实测值，字段名改为 `length_wgs84_m`，并新增 `length_3857_m` 便于对照。
+
+这本身就是"球面 vs 椭球"的第三个例证（前两个见第五节）。
+
+---
+
+## 十五、踩坑补充（N 为本轮新增，与第二节表分开计数）
+
+| # | 现象 | 根因 | 解法 |
+| --- | --- | --- | --- |
+| N7 | Miniconda 首次 `conda create` 报 `CondaToSNonInteractiveError: Terms of Service have not been accepted` | conda 26.x 新增合规校验，`defaults` 频道须显式接受条款（即使已配国内镜像，只要 `defaults` 在频道列表里就会触发） | 逐条执行 `conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/main`（`r`、`msys2` 同理），三条都要 |
+| N8 | QGIS 首次启动报 `Update of view in private qgis.db failed. view vw_srs already exists` | 首次初始化建库时循环刷新视图，未先判断视图是否已存在 | 备份后删除 `%APPDATA%\QGIS\QGIS3\profiles\default\qgis.db`，重启 QGIS 会自动从 `apps\qgis-ltr\resources\qgis.db` 重建。该库只存系统元数据，不含项目数据 |
+| N9 | **字段计算器 `$length` 算出 111,319.491，但真实椭球距离是 111,420.728** | 新建工程的 `工程属性 → 通用 → 测量 → 椭球` 默认是 **`None / Planimetric`**，`$length` 因此退化成平面算法：直接算坐标差值再按 111,319.491 m/度 换算。结果以"米"显示，看着正常，实际是错的 | 改为 **`WGS 84 (EPSG:7030)`**。改完 `$length` 立即返回正确椭球值 |
+| N10 | 测量工具把两条不相干的线连成一条跨洲长线（量出 7,970,465 m） | 测量工具默认是**连续折线模式**，点第二个点会接在上一段后面 | 每量一条线前先点 **`新建(N)`** 清空起点；另外先用属性表选中要素 + `Ctrl+J` 飞到该要素，避免在全局视野下瞎点 |
+| N11 | 同一条线两次测出完全一样的值（111,319.491） | 工程 CRS 还停在 3857（测完对比实验后没切回 4326），两种模式算的都是墨卡托平面距离 | 切换工程 CRS 后，检查**底部状态栏**坐标是否带度数符号，或右下角 CRS 显示是否为 EPSG:4326 |
+
+### 坑 N9 的三步定位法（值得记住）
+
+这个坑花了比较久才定位，因为症状很像"软件坏了"。有效的排查顺序是：
+
+1. **先证明软件算法没错** —— 用 `D:\xx\QGIS\bin\python-qgis-ltr.bat` 直接调 QGIS 自己的
+   `QgsDistanceArea` 引擎算一遍。结果正确（102,424.576），说明问题不在算法。
+2. **再查数据与参数** —— 椭球长/短半轴是标准 WGS84 值，没问题。
+3. **最后查工程级设置** —— 发现 `椭球 = None / Planimetric`。
+
+**教训**：`$length` / `$area` 的结果取决于**工程属性里的椭球设置**，
+而不只是坐标系。坐标系是 4326（度）但椭球是 `None` 时，
+QGIS 会用"度 → 米"的固定系数硬算，**结果看起来是米，实际是错的**。
+
+### 一个容易上当的数值巧合
+
+`None / Planimetric` 模式下 QGIS 换算 1 度所用的系数是 **111,319.491 m/度**；
+而赤道 1 度经度在 3857 下的长度**也是 111,319.491 m** —— 两者数值完全相同
+（都源于 `6378137 × π / 180`）。
+
+这意味着：**看到 111,319.491 时，它既可能是"3857 平面距离"，也可能是"椭球设置丢失后的假距离"**，
+不能凭数值反推原因。必须去看工程属性里的椭球设置。
+
+---
+
+## 十六、W1 验收自检
+
+| 验收项 | 状态 | 证据 |
+| --- | --- | --- |
+| 能手算 z=1、z=2 的瓦片编号，并能解释公式每一项 | ✅ | 见第十节手算过程 |
+| 能说清"同一份数据在 QGIS 里对不上底图"的 3 种可能原因 | ⏳ | 三类原因已整理，待用自己的话复述一遍 |
+| 投影换算脚本能跑，结果与 QGIS 一致（误差 < 1 米） | ✅ | 四方交叉验证误差为 0（见第七节） |
