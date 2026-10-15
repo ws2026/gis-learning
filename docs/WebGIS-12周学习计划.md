@@ -40,11 +40,13 @@
 
 ## 第 0 周 · 环境搭建
 
+> 📘 零基础详细版：[W0 实验手册](W0-环境搭建-实验手册.md)
+
 **目标**：把工具链装好，能启动项目、能连上数据库。
 
 **学**
 - 装：Node.js LTS、Git、VS Code、QGIS、Docker Desktop（需 WSL2）、Python（Miniconda）。
-- 读：[webgis-starter/README.md](webgis-starter/README.md)，理解每个文件干什么。
+- 读：[webgis-starter/README.md](../projects/webgis-starter/README.md)，理解每个文件干什么。
 
 **练**
 1. 跑通示例项目：`npm install` → `npm run dev`，打开 <http://127.0.0.1:5173>。
@@ -59,6 +61,8 @@
 ---
 
 ## 第 1 周 · 坐标系与投影
+
+> 📘 零基础详细版：[W1 实验手册](W1-坐标系与投影-实验手册.md)
 
 **目标**：把"图层对不上"这类问题从玄学变成可推理。
 
@@ -80,6 +84,8 @@
 ---
 
 ## 第 2 周 · 空间数据格式与转换
+
+> 📘 零基础详细版：[W2 实验手册](W2-空间数据格式与转换-实验手册.md)
 
 **目标**：能拿到任意格式的数据，清洗成能上线的东西。
 
@@ -103,6 +109,8 @@
 
 ## 第 3 周 · Web 与瓦片渲染原理
 
+> 📘 零基础详细版：[W3 实验手册](W3-Web与瓦片渲染原理-实验手册.md)
+
 **目标**：看懂"点一下地图，后台发生了什么"。
 
 **学**
@@ -117,17 +125,19 @@
 
 **验收标准**
 - [ ] 能不用地图库，手写 URL 把指定位置的瓦片显示在页面上
-- [ ] 能解释 WTMS 与 WFS 的本质区别（一个给图，一个给数据）
+- [ ] 能解释 WMTS 与 WFS 的本质区别（一个给图，一个给数据）
 - [ ] 能说出 CORS 报错时该找谁、有哪两种解法
 
 ---
 
 ## 第 4 周 · OpenLayers 核心
 
+> 📘 零基础详细版：[W4 实验手册](W4-OpenLayers核心-实验手册.md)
+
 **目标**：能独立组织图层、数据源、样式与交互。
 
 **学**
-- 对照 [src/map.js](webgis-starter/src/map.js)、[src/draw.js](webgis-starter/src/draw.js)、[src/styles.js](webgis-starter/src/styles.js) 读 OpenLayers 官方文档：
+- 对照 [src/map.js](../projects/webgis-starter/src/map.js)、[src/draw.js](../projects/webgis-starter/src/draw.js)、[src/styles.js](../projects/webgis-starter/src/styles.js) 读 OpenLayers 官方文档：
   `Map` / `View` / `Layer` / `Source` / `Style` / `Interaction` / `Overlay` / `ol/proj` / `ol/sphere`。
 
 **练**
@@ -144,6 +154,8 @@
 ---
 
 ## 第 5 周 · 可视化与矢量瓦片
+
+> 📘 零基础详细版：[W5 实验手册](W5-可视化与矢量瓦片-实验手册.md)
 
 **目标**：让地图"会说话"，并理解矢量瓦片。
 
@@ -166,6 +178,8 @@
 
 ## 第 6 周 · 工程化与部署
 
+> 📘 零基础详细版：[W6 实验手册](W6-工程化与部署-实验手册.md)
+
 **目标**：把本地 demo 变成别人能访问的东西。
 
 **学**
@@ -174,7 +188,7 @@
 
 **练**
 1. `npm run build` → 用 `nginx:alpine` 容器把 `dist` 挂载起来跑通访问。
-2. 把天地图 key 走 `.env` 注入（参考 [.env.example](webgis-starter/.env.example)）。
+2. 把天地图 key 走 `.env` 注入（参考 [.env.example](../projects/webgis-starter/.env.example)）。
 3. 写一份 5 步以内的"别人如何部署我的项目"说明。
 
 **验收标准**
@@ -187,6 +201,8 @@
 ---
 
 ## 第 7 周 · PostgreSQL + PostGIS
+
+> 📘 零基础详细版：[W7 实验手册](W7-PostgreSQL与PostGIS-实验手册.md)
 
 **目标**：数据从"文件"升级到"数据库"，会写空间 SQL。
 
@@ -212,11 +228,13 @@
 
 ## 第 8 周 · GeoServer 发布服务
 
+> 📘 零基础详细版：[W8 实验手册](W8-GeoServer发布服务-实验手册.md)
+
 **目标**：把数据库里的数据变成标准 OGC 服务。
 
 **学**
 - GeoServer 工作区 / 数据存储 / 图层 / 样式（SLD）、WMS 与 WFS 的差别、坐标系匹配。
-- 跨域（CORS）、代理（参考 [vite.config.js](webgis-starter/vite.config.js) 里的 `/geoserver`）。
+- 跨域（CORS）、代理（参考 [vite.config.js](../projects/webgis-starter/vite.config.js) 里的 `/geoserver`）。
 
 **练**
 1. 用 `docker run -p 8080:8080 docker.osgeo.org/geoserver:2.25.x` 起服务（默认 `admin/geoserver`），连上第 7 周的 PostGIS。
@@ -232,6 +250,8 @@
 ---
 
 ## 第 9 周 · 矢量瓦片与性能
+
+> 📘 零基础详细版：[W9 实验手册](W9-矢量瓦片与性能-实验手册.md)
 
 **目标**：解决"数据一多就卡死"的实战问题。
 
@@ -256,6 +276,8 @@
 
 ## 第 10 周 · 空间分析实战
 
+> 📘 零基础详细版：[W10 实验手册](W10-空间分析实战-实验手册.md)
+
 **目标**：从"会画图"升级到"能回答一个业务问题"。
 
 **学**
@@ -279,6 +301,8 @@
 
 ## 第 11 周 · AI 增强（关键差异化）
 
+> 📘 零基础详细版：[W11 实验手册](W11-AI增强-实验手册.md)
+
 **目标**：把 LLM 接进 GIS，同时练"验收 AI"的能力。
 
 **学**
@@ -299,6 +323,8 @@
 ---
 
 ## 第 12 周 · 打包交付
+
+> 📘 零基础详细版：[W12 实验手册](W12-打包交付-实验手册.md)
 
 **目标**：做成一个别人能一键运行、你能拿出去讲的系统。
 
@@ -323,12 +349,18 @@
 ## 第 13 周起 · 差异化延伸（选一条，各约 4~6 周）
 
 ### 轨道 B · 三维 / 数字孪生
+
+> 📘 零基础详细版：[轨道 B 实验手册](W13+轨道B-三维与数字孪生-实验手册.md)
+
 - **学**：CesiumJS、3D Tiles、倾斜摄影模型、坐标系与地形、WebGL/three.js 基础。
 - **练**：把第 12 周的系统加一个三维场景，加载倾斜摄影 + 你的矢量数据叠加；做一次"二三维联动"（点三维模型联动二维定位）。
 - **验收**：三维场景帧率可接受、模型与矢量位置对齐、能讲清 LOD 与瓦片调度。
 - **适合**：喜欢图形、愿意补数学；单价高但门槛也高。
 
 ### 轨道 C · 遥感 + AI
+
+> 📘 零基础详细版：[轨道 C 实验手册](W13+轨道C-遥感与AI-实验手册.md)
+
 - **学**：Python 数据处理、PyTorch 基础、影像分类/目标检测/变化检测、样本与精度评价（混淆矩阵、IoU）。
 - **练**：选一个公开数据集（如 Sentinel-2 / Landsat / 公开标注集），训练一个地物分类或变化检测模型，用第 12 周的系统把结果发布成图层。
 - **验收**：有独立的验证集，精度指标可复现，能诚实说明模型在哪些场景失效。
