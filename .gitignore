@@ -1,6 +1,7 @@
 node_modules/
 dist/
 .pnpm-store/
+__pycache__/
 .env
 .env.local
 .vscode/

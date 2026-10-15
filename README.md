@@ -1,7 +1,6 @@
 # gis-learning
 学习GIS
 
-今天学习下载git和配置GitHub
 ## 学习计划
 
 - [WebGIS 12 周学习计划（Markdown）](docs/WebGIS-12周学习计划.md)
@@ -26,6 +25,20 @@
 | W12 | 打包交付（里程碑三） | [W12-打包交付-实验手册](docs/W12-打包交付-实验手册.md) |
 | W13+ | 轨道 B · 三维/数字孪生 | [W13+轨道B-三维与数字孪生-实验手册](docs/W13+轨道B-三维与数字孪生-实验手册.md) |
 | W13+ | 轨道 C · 遥感 + AI | [W13+轨道C-遥感与AI-实验手册](docs/W13+轨道C-遥感与AI-实验手册.md) |
+
+## 仓库结构
+
+```
+gis-learning/
+├─ docs/        # 学习计划 + W0~W13+ 每周实验手册（照着做就行）
+├─ notes/       # 每周笔记：完成清单、实测数据、坑表
+├─ data/        # 数据管线：raw/（原始下载）→ clean/（ogr2ogr 清洗后）
+└─ projects/    # 代码项目：coordinate-lab（W1）、webgis-starter（前端）
+```
+
+> ⚠️ **数据双份的约定**：`data/clean/*.geojson` 是清洗后的**母本**；前端要用的那份**复制**到
+> `projects/webgis-starter/public/data/`（浏览器只能 fetch 到 public 目录下的文件）。
+> 以后改了母本，记得重新复制一份过去，否则前端显示的还是旧数据。
 
 ## 进度
 
